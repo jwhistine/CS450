@@ -19,7 +19,7 @@ public class ExperimentShell {
      * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {
-        DataSource source = new DataSource("C:\\Users\\mormon\\Documents\\NetBeansProjects\\experimentShell\\src\\Data.csv"); // add csv file
+        DataSource source = new DataSource(""); 
         Instances data = source.getDataSet();
         
         if (data.classIndex() == -1)
