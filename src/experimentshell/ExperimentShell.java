@@ -49,8 +49,18 @@ public class ExperimentShell {
         // split the data for test set
         filter.setInvertSelection(true);
         filter.setInputFormat(data);
-        Instances test = new Instances(data);
+        Instances test = Filter.useFilter(data, filter);
         
+        System.out.println("Training Set: ");
+        // print out the training set
+        for (Instance training1 : training) {
+            System.out.println(training1);
+        }
         
+        System.out.println("Test set: ");
+        // print the test set
+        for (Instance test1 : test) {
+            System.out.println(test1);
+        }
     }
 }
