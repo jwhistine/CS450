@@ -4,9 +4,12 @@
  * and open the template in the editor.
  */
 package experimentshell;
+import weka.core.Debug.Random;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
+import weka.filters.Filter;
+import weka.filters.unsupervised.instance.RemovePercentage;
 
 /**
  *
@@ -19,15 +22,35 @@ public class ExperimentShell {
      * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {
-        DataSource source = new DataSource(""); 
+        String file;
+        
+        file = "C:\\Users\\mormon\\Documents\\NetBeansProjects\\experimentShell\\src\\Data.csv";
+        
+        DataSource source = new DataSource(file); 
         Instances data = source.getDataSet();
         
         if (data.classIndex() == -1)
             data.setClassIndex(data.numAttributes() - 1);
-       
-        // print out the list to see what it looks like
-        for (Instance data1 : data) {
-            System.out.println(data1);
-        }
+        
+        // randomize the data 
+        data.randomize(new Random(1));
+        
+        /****************************************************
+         * Split the data up into its proper sets. #3
+         ***************************************************/
+        // set a filter to pull out the 70%
+        RemovePercentage filter = new RemovePercentage();
+        filter.setPercentage(70);
+        
+        // split the data for training set
+        filter.setInputFormat(data);
+        Instances training =  Filter.useFilter(data, filter);
+
+        // split the data for test set
+        filter.setInvertSelection(true);
+        filter.setInputFormat(data);
+        Instances test = new Instances(data);
+        
+        
     }
 }
