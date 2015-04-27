@@ -23,7 +23,7 @@ public class ExperimentShell {
      * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {
-        String file = "C:\\Users\\mormon\\Documents\\NetBeansProjects\\experimentShell\\src\\Data.csv";
+        String file = "iris.csv";
         
         DataSource source = new DataSource(file); 
         Instances data = source.getDataSet();
