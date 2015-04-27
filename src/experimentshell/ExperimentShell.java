@@ -58,6 +58,6 @@ public class ExperimentShell {
          Evaluation eval = new Evaluation(training);
          eval.evaluateModel(hardCode, data);
          
-         System.out.println(eval.toSummaryString("Overall results: ", false));
+         System.out.println(eval.toSummaryString("***** Overall results: *****", false));
     }
 }
