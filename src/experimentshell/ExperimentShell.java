@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 package experimentshell;
+import weka.classifiers.Classifier;
+import weka.classifiers.Evaluation;
 import weka.core.Debug.Random;
-import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
@@ -22,9 +23,7 @@ public class ExperimentShell {
      * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {
-        String file;
-        
-        file = "C:\\Users\\mormon\\Documents\\NetBeansProjects\\experimentShell\\src\\Data.csv";
+        String file = "C:\\Users\\mormon\\Documents\\NetBeansProjects\\experimentShell\\src\\Data.csv";
         
         DataSource source = new DataSource(file); 
         Instances data = source.getDataSet();
@@ -51,16 +50,14 @@ public class ExperimentShell {
         filter.setInputFormat(data);
         Instances test = Filter.useFilter(data, filter);
         
-        System.out.println("Training Set: ");
-        // print out the training set
-        for (Instance training1 : training) {
-            System.out.println(training1);
-        }
-        
-        System.out.println("Test set: ");
-        // print the test set
-        for (Instance test1 : test) {
-            System.out.println(test1);
-        }
+        /*
+         * #5 
+         */
+         Classifier hardCode = (Classifier) new HardCodeClassifier();
+         hardCode.buildClassifier(training);
+         Evaluation eval = new Evaluation(training);
+         eval.evaluateModel(hardCode, data);
+         
+         System.out.println(eval.toSummaryString("Overall results: ", false));
     }
 }
