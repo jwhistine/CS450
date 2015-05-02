@@ -10,6 +10,7 @@ import weka.core.Debug.Random;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.Standardize;
 import weka.filters.unsupervised.instance.RemovePercentage;
 
 /**
@@ -23,8 +24,9 @@ public class ExperimentShell {
      * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {
-        String file = "iris.csv";
+        String file = "C:\\Users\\mormon\\Documents\\NetBeansProjects\\experimentShell\\src\\Data.csv";
         
+        // read in the CSV file and parse it
         DataSource source = new DataSource(file); 
         Instances data = source.getDataSet();
         
@@ -38,25 +40,32 @@ public class ExperimentShell {
          * Split the data up into its proper sets. #3
          ***************************************************/
         // set a filter to pull out the 70%
-        RemovePercentage filter = new RemovePercentage();
-        filter.setPercentage(70);
+        RemovePercentage remove = new RemovePercentage();
+        remove.setPercentage(70);
         
         // split the data for training set
-        filter.setInputFormat(data);
-        Instances training =  Filter.useFilter(data, filter);
+        remove.setInputFormat(data);
+        Instances training =  Filter.useFilter(data, remove);
 
         // split the data for test set
-        filter.setInvertSelection(true);
-        filter.setInputFormat(data);
-        Instances test = Filter.useFilter(data, filter);
+        remove.setInvertSelection(true);
+        remove.setInputFormat(data);
+        Instances test = Filter.useFilter(data, remove);
+        
+        // Standardize the data
+        Standardize filter = new Standardize();
+        filter.setInputFormat(training);
+        
+        Instances newTest = Filter.useFilter(test, filter);
+        Instances newTraining = Filter.useFilter(training, filter);
         
         /*
-         * #5 
+         * The Nearest Neighbor implementation 
          */
-         Classifier hardCode = (Classifier) new HardCodeClassifier();
-         hardCode.buildClassifier(training);
-         Evaluation eval = new Evaluation(training);
-         eval.evaluateModel(hardCode, data);
+        Classifier knn = new knn();
+         knn.buildClassifier(newTraining);
+         Evaluation eval = new Evaluation(newTraining);
+         eval.evaluateModel(knn, newTest);
          
          System.out.println(eval.toSummaryString("***** Overall results: *****", false));
     }
