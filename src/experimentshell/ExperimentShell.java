@@ -59,14 +59,14 @@ public class ExperimentShell {
         Instances newTest = Filter.useFilter(test, filter);
         Instances newTraining = Filter.useFilter(training, filter);
         
-        /*
-         * The Nearest Neighbor implementation 
-         */
-        Classifier knn = new knn();
-         knn.buildClassifier(newTraining);
-         Evaluation eval = new Evaluation(newTraining);
-         eval.evaluateModel(knn, newTest);
-         
-         System.out.println(eval.toSummaryString("***** Overall results: *****", false));
+        /***********************************************************
+         * ID3 Implementation
+         **********************************************************/
+        Classifier id3 = new ID3();
+        id3.buildClassifier(newTraining);
+        Evaluation eval = new Evaluation(newTraining);
+        eval.evaluateModel(id3, newTest);
+        
+        System.out.println(eval.toSummaryString("***** Overall results: *****", false));
     }
 }

@@ -39,6 +39,8 @@ public class knn extends Classifier {
            for (int j = 0; j < data.numAttributes(); j++) {
                // this is the Manhattan distance
                distance += abs((int)(data.instance(i).value(j) - instance.value(j)));
+               // the Euclidean distance
+               // distance += pow((int)(data.instance(i).value(j) - instance.value(j)), 2);
            }   
            distances.put(distance, data.instance(i).classValue());
            distance = 0;
