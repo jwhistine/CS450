@@ -26,14 +26,9 @@ public class NeuralNetworkClassifier extends Classifier {
         makeNeuralNetwork();
     }
 
-    /*
-     * CAUTION numAttributes is attributes + 1 because it counts the class
-     * as an attribute as well
-     */
+    
     public void makeNeuralNetwork() {
-        // IRIS: 4, 3, 1, 4
-        nn = new NeuralNetwork(iData.numAttributes() - 1, iData.numClasses(),
-                1, 4);
+        nn = new NeuralNetwork(iData.numAttributes() - 1, iData.numClasses(), 1, 4);
         List<Double> attributeValues = new ArrayList();
 
         for (int i = 0; i < iData.numInstances(); i++) {
@@ -53,7 +48,7 @@ public class NeuralNetworkClassifier extends Classifier {
             attributeValues.add(instance.value(i));
         }
 
-        // feed forward to get the output activation values
+        // call feedforward
         mOutputs = nn.feedForward(attributeValues);
 
         if (mOutputs.size() > 0) {

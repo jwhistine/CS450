@@ -14,8 +14,7 @@ import java.util.Random;
  * @author mormon
  */
 public class NeuralNode {
-    // the number of inputs into the node
-    public int m_numInputs;
+    public int m_numInputs; // for the inputs
 
     // the weights for each input
     public List<Double> m_weights = new ArrayList();

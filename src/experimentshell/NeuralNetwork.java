@@ -20,9 +20,8 @@ public class NeuralNetwork {
     private int m_numHiddenLayers;
 
     private int m_neuronsPerHiddenLayer;
-
-    // storage for each layer of neurons including the output layer
-    List<NeuralLayer> mListLayers = new ArrayList();
+    
+    List<NeuralLayer> mListLayers = new ArrayList(); // stores each layer of nodes
 
     private double mBias = 1.0;
     private double mResponse = 1.0;
@@ -35,15 +34,12 @@ public class NeuralNetwork {
         m_numHiddenLayers = pNumHiddenLayers;
         m_neuronsPerHiddenLayer = pNeuronsPerHiddenLayer;
 
-        // the weights are all initially set to random values -1 < w < 1
-        // create the layers of the network
         if (m_numHiddenLayers > 0) {
-
             // create first hidden layer
             NeuralLayer nLayer = new NeuralLayer(m_neuronsPerHiddenLayer, m_numInputs);
             mListLayers.add(nLayer);
 
-            // create additional hidden layers
+            // create other hidden layers
             for (int i = 0; i < m_numHiddenLayers - 1; i++) {
                 NeuralLayer hiddenLayer = new NeuralLayer(m_neuronsPerHiddenLayer, m_neuronsPerHiddenLayer);
                 mListLayers.add(hiddenLayer);
@@ -59,17 +55,17 @@ public class NeuralNetwork {
         }
     }
 
-    // calculate the output from a given set of inputs
     public List<Double> feedForward(List<Double> pInputs) {
-        List<Double> outputs = new ArrayList();
+        List<Double> outputs = new ArrayList(); // stores the result
 
         int weightIndex;
 
+        // check for correct number of outputs
         if (pInputs.size() != m_numInputs) {
-            return outputs; // return empty
+            return outputs; // return empty list if incorrect
         }
 
-        // at least once, plus the number of hidden layers
+        // iterate through....
         for (int i = 0; i < m_numHiddenLayers + 1; i++) {
             if (i > 0) {
                 pInputs = new ArrayList(outputs);
@@ -78,25 +74,25 @@ public class NeuralNetwork {
 
             weightIndex = 0;
 
-            // for each neuron sum the (inputs * corresponding weights
-            // throw the total at our sigmoid function to get the output
-            // loop through all neurons in each layer
+            // sum the inputs and the weights and add them to the sigmoid
+            // function to be calculated.
             for (int j = 0; j < mListLayers.get(i).mNumNeurons; j++) {
                 double weightedSum = 0.0;
 
-                // number of inputs for this layer
+                // number of inputs for the layer
                 int numInputs = mListLayers.get(i).mListNeurons.get(j).m_numInputs;
 
-                // for each weight in the nueron of this layer
+                // for each weight given for calculation
                 for (int k = 0; k < numInputs - 1; k++) {
+                    // sum the weights
                     weightedSum += mListLayers.get(i).mListNeurons.get(j).m_weights.get(k)
                             * pInputs.get(weightIndex++);
                 }
 
-                // add in the bias separatley (from the above loop)
+                // add the bias to make it work
                 weightedSum += mListLayers.get(i).mListNeurons.get(j).m_weights.get(numInputs - 1) * mBias;
 
-                // add the activation response to the list of outputs of each node
+                // calculate the "h" for the layer (output)
                 outputs.add(sigmoid(weightedSum, mResponse));
 
                 weightIndex = 0;
@@ -118,9 +114,7 @@ public class NeuralNetwork {
         double weightedSum = 0;
         List<Double> listError = new ArrayList();
 
-        // 1. calculate output error for each neuron in this layer
-        //    starting at the output layer
-        // for each node in this layer
+        // output layer connection
         for (int i = 0; i < mListLayers.get(m_numHiddenLayers).mNumNeurons; i++) {
             if (i == classIndex) {
                 target = 1.0;
@@ -133,11 +127,11 @@ public class NeuralNetwork {
         }
         mListLayers.get(m_numHiddenLayers).mListError = new ArrayList(listError);
 
-        // 2. calculate hidden error
+        // calculate hidden error
         if (m_numHiddenLayers > 0) {
             for (int i = m_numHiddenLayers; i > 0; i--) {
                 listError.clear();
-                // for each node in this layer
+                // each node in this layer
                 for (int j = 0; j < mListLayers.get(i - 1).mNumNeurons; j++) {
                     activation = mListLayers.get(i - 1).mListActivations.get(j);
                     for (int k = 0; k < mListLayers.get(i).mNumNeurons; k++) {
@@ -149,6 +143,7 @@ public class NeuralNetwork {
                 mListLayers.get(i - 1).mListError = new ArrayList(listError);
             }
         }
+        // feedforward update
         for (int i = 0; i < m_numHiddenLayers + 1; i++) {
             for (int j = 0; j < mListLayers.get(i).mNumNeurons; j++) {
                 int numInputs = mListLayers.get(i).mListNeurons.get(j).m_numInputs;

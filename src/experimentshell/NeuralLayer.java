@@ -34,9 +34,6 @@ public class NeuralLayer {
 
     }
 
-    /**
-     * @return the mNumNeurons
-     */
     public int getmNumNeurons() {
         return mNumNeurons;
     }
