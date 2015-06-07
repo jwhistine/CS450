@@ -59,13 +59,13 @@ public class ExperimentShell {
         Instances newTest = Filter.useFilter(test, filter);
         Instances newTraining = Filter.useFilter(training, filter);
         
-        /***********************************************************
-         * ID3 Implementation
-         **********************************************************/
-        Classifier id3 = new ID3();
-        id3.buildClassifier(newTraining);
+        /**********************************************************
+         * Neural Network
+         *********************************************************/
+        Classifier neuralNet = new NeuralNetworkClassifier();
+        neuralNet.buildClassifier(newTraining);
         Evaluation eval = new Evaluation(newTraining);
-        eval.evaluateModel(id3, newTest);
+        eval.evaluateModel(neuralNet, newTest);
         
         System.out.println(eval.toSummaryString("***** Overall results: *****", false));
     }
