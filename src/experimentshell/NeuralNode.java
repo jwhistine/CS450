@@ -14,19 +14,22 @@ import java.util.Random;
  * @author mormon
  */
 public class NeuralNode {
-    public int m_numInputs; // for the inputs
-    public List<Double> m_weight = new ArrayList();
-	
+    // the number of inputs into the node
+    public int m_numInputs;
+
+    // the weights for each input
+    public List<Double> m_weights = new ArrayList();
+
     public NeuralNode(int numInputs) {
+        // add additional neuron for bias
         m_numInputs = numInputs + 1;
-        
+
         Random rand = new Random();
         double randomNum = rand.nextDouble() * 2 - 1;
         double values = randomNum;
         // randomize the weights and add them to the list
         for (int i = 0; i < m_numInputs; i++) {
-            m_weight.add(values);
-            System.out.println("Random numbers: " + values);
+            m_weights.add(values);
         }
     }
 }

@@ -13,24 +13,31 @@ import java.util.List;
  * @author mormon
  */
 public class NeuralLayer {
-    public int m_numNeurons;
-   
-    public List<Double> listActivations;
-    public List<Double> listError;
-    
-    List<NeuralNode> m_neurons;
-	
-    public NeuralLayer(int numNeurons, int numInputPerNeuron) {
-        m_neurons = new ArrayList();
-        m_numNeurons = numNeurons;
-        
-        for (int i = 0; i < numNeurons; i++) {
-            NeuralNode n = new NeuralNode(numInputPerNeuron);
-            m_neurons.add(n);
+    // the number of neurons in this layer
+    public int mNumNeurons;
+
+    // to store the output/activation
+    public List<Double> mListActivations;
+
+    public List<Double> mListError;
+
+    // the layer of neurons
+    public List<NeuralNode> mListNeurons;
+
+    public NeuralLayer(int numNeurons, int numInputPerNueron) {
+        mListNeurons = new ArrayList();
+        mNumNeurons = numNeurons;
+        for (int i = 0; i < mNumNeurons; i++) {
+            NeuralNode n = new NeuralNode(numInputPerNueron);
+            mListNeurons.add(n);
         }
+
     }
-    
-    public int getNumNeurons() {
-        return m_numNeurons;
+
+    /**
+     * @return the mNumNeurons
+     */
+    public int getmNumNeurons() {
+        return mNumNeurons;
     }
 }
