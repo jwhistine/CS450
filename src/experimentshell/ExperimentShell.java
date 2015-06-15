@@ -41,7 +41,7 @@ public class ExperimentShell {
          ***************************************************/
         // set a filter to pull out the 70%
         RemovePercentage remove = new RemovePercentage();
-        remove.setPercentage(70);
+        remove.setPercentage(100);
         
         // split the data for training set
         remove.setInputFormat(data);

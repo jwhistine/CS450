@@ -23,8 +23,7 @@ public class NeuralNetwork {
     
     List<NeuralLayer> mListLayers = new ArrayList(); // stores each layer of nodes
 
-    private double mBias = 1.0;
-    private double mResponse = 1.0;
+    private double mBias = -1.0;
     private double mLearningRate = 0.25;
 
     public NeuralNetwork(int pNumInputs, int pNumOutputs,
@@ -93,7 +92,7 @@ public class NeuralNetwork {
                 weightedSum += mListLayers.get(i).mListNeurons.get(j).m_weights.get(numInputs - 1) * mBias;
 
                 // calculate the "h" for the layer (output)
-                outputs.add(sigmoid(weightedSum, mResponse));
+                outputs.add(sigmoid(weightedSum));
 
                 weightIndex = 0;
             }
@@ -102,8 +101,8 @@ public class NeuralNetwork {
         return outputs;
     }
 
-    public double sigmoid(double netinput, double response) {
-        return (1.0 / (1.0 + Math.pow(Math.E, (-1.0 * netinput / response))));
+    public double sigmoid(double netinput) {
+        return (1.0 / (1.0 + Math.exp(-netinput)));
     }
 
     void backPropagate(double classIndex) {
@@ -113,7 +112,7 @@ public class NeuralNetwork {
         double weightValue;
         double weightedSum = 0;
         List<Double> listError = new ArrayList();
-
+        
         // output layer connection
         for (int i = 0; i < mListLayers.get(m_numHiddenLayers).mNumNeurons; i++) {
             if (i == classIndex) {
@@ -135,7 +134,8 @@ public class NeuralNetwork {
                 for (int j = 0; j < mListLayers.get(i - 1).mNumNeurons; j++) {
                     activation = mListLayers.get(i - 1).mListActivations.get(j);
                     for (int k = 0; k < mListLayers.get(i).mNumNeurons; k++) {
-                        weightedSum += mListLayers.get(i).mListError.get(k) * mListLayers.get(i).mListNeurons.get(k).m_weights.get(j);
+                        weightedSum += mListLayers.get(i).mListError.get(k) 
+                                    * mListLayers.get(i).mListNeurons.get(k).m_weights.get(j);
                     }
                     error = activation * (1 - activation) * weightedSum;
                     listError.add(error);
@@ -149,8 +149,8 @@ public class NeuralNetwork {
                 int numInputs = mListLayers.get(i).mListNeurons.get(j).m_numInputs;
                 for (int k = 0; k < numInputs - 1; k++) {
                     weightValue = mListLayers.get(i).mListNeurons.get(j).m_weights.get(k);
-                    weightValue -= mLearningRate * mListLayers.get(i).mListError.get(j)
-                            * mListLayers.get(i).mListActivations.get(j);
+                    weightValue = weightValue - (mLearningRate * mListLayers.get(i).mListError.get(j)
+                                * mListLayers.get(i).mListActivations.get(j));
                     mListLayers.get(i).mListNeurons.get(j).m_weights.set(k, weightValue);
                 }
             }

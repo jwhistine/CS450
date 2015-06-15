@@ -24,11 +24,11 @@ public class NeuralNode {
         m_numInputs = numInputs + 1;
 
         Random rand = new Random();
-        double randomNum = rand.nextDouble() * 2 - 1;
-        double values = randomNum;
+        double randomNum;
         // randomize the weights and add them to the list
         for (int i = 0; i < m_numInputs; i++) {
-            m_weights.add(values);
+            randomNum = rand.nextDouble() * 2 - 1;
+            m_weights.add(randomNum);
         }
     }
 }
